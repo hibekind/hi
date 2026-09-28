@@ -1,0 +1,42 @@
+html, body {
+  margin: 0;
+  background: #FFFFFF;
+  color: #1C2340;
+  font-family: "DM Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+* { box-sizing: border-box; }
+a { color: #1A35A3; text-decoration: none; }
+a:hover { color: #1F3FC3; text-decoration: underline; }
+input, select, button, textarea { font-family: inherit; }
+
+/* Nav links: only underline-free, color set by JS for active state */
+.nav-link:hover { text-decoration: none; color: #1A35A3 !important; }
+.nav-link.active { color: #1A35A3 !important; background: rgba(31,63,195,0.10) !important; }
+
+/* Hover utility classes, replacing the design tool's non-standard style-hover */
+.hover-a35a3:hover { background: #1A35A3 !important; text-decoration: none; }
+.hover-e8ecf9:hover { background: #E8ECF9 !important; text-decoration: none; }
+.hover-white12:hover { background: rgba(255,255,255,0.12) !important; text-decoration: none; }
+.hover-262f55:hover { background: #262F55 !important; text-decoration: none; }
+
+.tile { transition: background 0.15s ease; }
+
+#zum-formular:hover,
+#test-eintragen:hover { background: #1A35A3; }
+#ver-neu:hover { background: rgba(31,63,195,0.08); }
+
+/* FAQ */
+.faq-item { padding: 20px 0; border-bottom: 1px solid rgba(28,35,64,0.12); cursor: pointer; }
+.faq-row { display: flex; justify-content: space-between; gap: 16px; font-weight: 700; font-size: 17px; }
+.faq-row span:first-child { flex: 1 1 auto; min-width: 0; }
+.faq-row span:last-child { color: #62667A; flex-shrink: 0; }
+.faq-answer { margin: 10px 0 0; font-size: 16px; line-height: 1.55; color: #464A5C; }
+
+/* Rollen-Chips (Veranstalter-Formular) */
+#rollen span { transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease; }
+
+@media (max-width: 520px) {
+  header nav { gap: 2px; }
+  header a[data-nav] { padding: 8px 10px !important; font-size: 14px !important; }
+}
