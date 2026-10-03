@@ -1,0 +1,5 @@
+torch>=2.4
+diffusers>=0.37
+transformers>=4.57
+accelerate
+sentencepiece
