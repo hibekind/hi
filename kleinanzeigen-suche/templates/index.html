@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kleinanzeigen Bildsuche</title>
+<style>
+  :root { --gruen: #326916; --hell: #f4f7f0; --rand: #d9dfd2; --text: #1d1f1b; --grau: #6b7066; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 16px/1.5 system-ui, sans-serif; color: var(--text); background: #fff; }
+  main { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { margin: 0 0 4px; font-size: 1.6rem; }
+  .sub { color: var(--grau); margin: 0 0 24px; }
+  form { background: var(--hell); border: 1px solid var(--rand); border-radius: 12px; padding: 20px; display: grid; gap: 14px; }
+  label { font-weight: 600; display: block; margin-bottom: 4px; }
+  input[type=text], input[type=number] { width: 100%; padding: 10px; border: 1px solid var(--rand); border-radius: 8px; font: inherit; }
+  .reihe { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; }
+  .check { display: flex; gap: 8px; align-items: center; font-weight: normal; }
+  #drop { border: 2px dashed var(--rand); border-radius: 10px; padding: 18px; text-align: center; background: #fff; cursor: pointer; }
+  #drop img { max-height: 220px; max-width: 100%; border-radius: 8px; display: block; margin: 0 auto 8px; }
+  button { background: var(--gruen); color: #fff; border: 0; border-radius: 8px; padding: 12px; font: inherit; font-weight: 600; cursor: pointer; }
+  button:disabled { opacity: .6; cursor: wait; }
+  .fehler { background: #fde8e8; border: 1px solid #f3b4b4; padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+  .hinweis { color: var(--grau); font-size: .9rem; }
+  .info { margin: 28px 0 12px; }
+  .chips span { display: inline-block; background: var(--hell); border: 1px solid var(--rand); border-radius: 99px; padding: 2px 10px; margin: 2px; font-size: .85rem; }
+  .liste { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+  .karte { border: 1px solid var(--rand); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; text-decoration: none; color: inherit; }
+  .karte:hover { border-color: var(--gruen); }
+  .karte img { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: var(--hell); }
+  .karte .inhalt { padding: 10px 12px; display: grid; gap: 4px; }
+  .titel { font-weight: 600; }
+  .preis { color: var(--gruen); font-weight: 700; }
+  .meta { color: var(--grau); font-size: .85rem; }
+  .badge { display: inline-block; font-size: .75rem; font-weight: 700; padding: 1px 8px; border-radius: 99px; margin-right: 4px; }
+  .b-gleich { background: #ffe58f; } .b-hoch { background: #c8e6b0; } .b-mittel { background: #e8eddf; } .b-res { background: #fde2c4; }
+  @media (max-width: 560px) { .reihe { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Kleinanzeigen Bildsuche</h1>
+  <p class="sub">Foto hochladen und passende Anzeigen finden, die noch online sind.</p>
+
+  {% if fehler %}<div class="fehler">{{ fehler }}</div>{% endif %}
+
+  <form action="/suche" method="post" enctype="multipart/form-data" id="formular">
+    <div>
+      <label for="bild">Foto</label>
+      <div id="drop"><img id="vorschau" hidden><span id="droptext">Bild hierher ziehen oder klicken</span></div>
+      <input type="file" name="bild" id="bild" accept="image/*" hidden required>
+    </div>
+    <div>
+      <label for="begriffe">Eigene Suchbegriffe {% if ki %}(optional){% endif %}</label>
+      <input type="text" name="begriffe" id="begriffe" placeholder="z. B. Gazelle Fahrrad, Hollandrad grün (mit Komma trennen)" {% if not ki %}required{% endif %}>
+      {% if not ki %}<p class="hinweis">Ohne ANTHROPIC_API_KEY wird das Foto nicht automatisch erkannt – bitte Suchbegriffe angeben.</p>{% endif %}
+    </div>
+    <div class="reihe">
+      <div><label for="plz">PLZ oder Ort (optional)</label><input type="text" name="plz" id="plz" placeholder="ganz Deutschland"></div>
+      <div><label for="radius">Umkreis km</label><input type="number" name="radius" id="radius" min="0" step="5" placeholder="0"></div>
+    </div>
+    <label class="check"><input type="checkbox" name="ohne_reserviert" value="1"> Reservierte Anzeigen ausblenden</label>
+    {% if ki %}<label class="check"><input type="checkbox" name="ki_vergleich" value="1" checked> KI-Bildvergleich (genauer, dauert etwas länger)</label>{% endif %}
+    <button type="submit" id="los">Suchen</button>
+  </form>
+
+  {% if ergebnis %}
+  <div class="info">
+    {% if ergebnis.produkt %}<p><strong>Erkannt:</strong> {{ ergebnis.produkt }}</p>{% endif %}
+    <div class="chips">Gesucht nach: {% for b in ergebnis.suchbegriffe %}<span>{{ b }}</span>{% endfor %}</div>
+    <p class="hinweis">{{ ergebnis.anzeigen|length }} aktive Anzeigen gefunden{% if ergebnis.offline_aussortiert %}, {{ ergebnis.offline_aussortiert }} nicht mehr verfügbare aussortiert{% endif %}.</p>
+    {% for h in ergebnis.hinweise %}<p class="hinweis">⚠ {{ h }}</p>{% endfor %}
+  </div>
+  <div class="liste">
+    {% for a in ergebnis.anzeigen %}
+    <a class="karte" href="{{ a.url }}" target="_blank" rel="noopener">
+      {% if a.bild_url %}<img src="{{ a.bild_url }}" alt="" loading="lazy" referrerpolicy="no-referrer">{% endif %}
+      <div class="inhalt">
+        <div>
+          {% if a.gleiches_foto %}<span class="badge b-gleich">Gleiches Foto</span>
+          {% elif a.score >= 70 %}<span class="badge b-hoch">{{ a.score }} % Treffer</span>
+          {% elif a.score > 0 %}<span class="badge b-mittel">{{ a.score }} %</span>{% endif %}
+          {% if a.reserviert %}<span class="badge b-res">Reserviert</span>{% endif %}
+        </div>
+        <div class="titel">{{ a.titel }}</div>
+        <div class="preis">{{ a.preis }}</div>
+        <div class="meta">{{ a.ort }}{% if a.datum %} · {{ a.datum }}{% endif %}</div>
+        {% if a.ki_grund %}<div class="meta">{{ a.ki_grund }}</div>{% endif %}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+</main>
+<script>
+  const drop = document.getElementById('drop'), input = document.getElementById('bild');
+  const vorschau = document.getElementById('vorschau'), text = document.getElementById('droptext');
+  function zeigen(f) { if (!f) return; vorschau.src = URL.createObjectURL(f); vorschau.hidden = false; text.textContent = f.name; }
+  drop.onclick = () => input.click();
+  input.onchange = () => zeigen(input.files[0]);
+  drop.ondragover = e => { e.preventDefault(); drop.style.borderColor = '#326916'; };
+  drop.ondragleave = () => drop.style.borderColor = '';
+  drop.ondrop = e => { e.preventDefault(); input.files = e.dataTransfer.files; zeigen(input.files[0]); };
+  document.addEventListener('paste', e => {
+    const f = [...e.clipboardData.files].find(f => f.type.startsWith('image/'));
+    if (f) { const dt = new DataTransfer(); dt.items.add(f); input.files = dt.files; zeigen(f); }
+  });
+  document.getElementById('formular').onsubmit = () => {
+    const b = document.getElementById('los'); b.disabled = true; b.textContent = 'Suche läuft … (bis zu 1 Minute)';
+  };
+</script>
+</body>
+</html>
