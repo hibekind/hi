@@ -1,3 +1,41 @@
+/* DM Sans, selbst ausgeliefert (kein Abruf bei Google). Schrift: DM Sans,
+   SIL Open Font License 1.1, https://openfontlicense.org */
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/DMSans-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/DMSans-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/DMSans-SemiBold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/DMSans-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "DM Sans";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("/fonts/DMSans-ExtraBold.ttf") format("truetype");
+}
+
 html, body {
   margin: 0;
   background: #FFFFFF;
