@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!-- Dieselbe Datei liegt als /404.html, damit /event/<id> auf GitHub Pages ankommt. -->
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>umzu</title>
+<meta name="description" content="Eine Veranstaltung in der umzu App.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="umzu">
+<meta property="og:description" content="Datum, Uhrzeit und Ort dieser Veranstaltung.">
+<meta property="og:image" content="https://umzu.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://umzu.app/event/">
+<meta property="og:locale" content="de_DE">
+<meta name="theme-color" content="#1F3FC3">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/style.css">
+<style>
+  [hidden] { display: none !important; }
+  #karte h1 { margin: 0; font-weight: 800; font-size: clamp(32px, 5vw, 48px); line-height: 1.08; letter-spacing: -1.2px; color: #1C2340; }
+  #karte p { margin: 0; font-size: 18px; line-height: 1.5; color: #1C2340; }
+  #karte #hinweis { margin-bottom: 14px; font-weight: 700; color: #1F3FC3; }
+  #karte #wann { margin-top: 16px; }
+  #karte #adresse { margin-top: 4px; font-size: 16px; color: #464A5C; }
+  #karte #meldung { margin-bottom: 8px; font-size: 18px; color: #464A5C; }
+  #bild { width: 100%; max-height: 420px; object-fit: cover; border-radius: 24px; display: block; background: #E8ECF9; margin: 0 0 22px; }
+  #store { margin-top: 28px; min-height: 54px; padding: 0 26px; display: inline-flex; align-items: center; border-radius: 16px; background: #1F3FC3; color: #fff; font-weight: 700; font-size: 18px; text-decoration: none; }
+  #startseite { margin-top: 20px; font-size: 17px; }
+</style>
+</head>
+<body>
+
+<div style="min-height:100vh;display:flex;flex-direction:column">
+
+<header style="position:sticky;top:0;z-index:10;background:rgba(255,255,255,0.94);backdrop-filter:blur(10px);border-bottom:1px solid rgba(28,35,64,0.08)">
+  <div style="max-width:1160px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+    <a href="/" style="display:flex;align-items:center;gap:8px;cursor:pointer;text-decoration:none">
+      <svg width="28" height="28" viewBox="0 0 100 100"><circle cx="50" cy="19.5" r="9" fill="#1F3FC3"></circle><path d="M 26 39 L 26 60 A 24 24 0 0 0 74 60 L 74 39" fill="none" stroke="#1F3FC3" stroke-width="18" stroke-linecap="round"></path></svg>
+      <span style="font-weight:800;font-size:23px;letter-spacing:-1px;color:#1F3FC3">umzu</span>
+    </a>
+    <nav style="display:flex;gap:4px;flex-wrap:wrap;margin-left:auto;align-items:center">
+      <a href="/#app" data-nav="nutzer" class="nav-link" style="padding:10px 14px;border-radius:100px;font-weight:600;font-size:15px;cursor:pointer;white-space:nowrap;text-decoration:none;color:#1C2340">Die App</a>
+      <a href="/#veranstalter" data-nav="veranstalter" class="nav-link" style="padding:10px 14px;border-radius:100px;font-weight:600;font-size:15px;cursor:pointer;white-space:nowrap;text-decoration:none;color:#1C2340">Veranstalter</a>
+      <a href="/#investoren" data-nav="investoren" class="nav-link" style="padding:10px 14px;border-radius:100px;font-weight:600;font-size:15px;cursor:pointer;white-space:nowrap;text-decoration:none;color:#1C2340">Investoren</a>
+      <a href="/#test" data-nav="test" class="hover-a35a3" style="margin-left:8px;white-space:nowrap;padding:11px 18px;border-radius:14px;background:#1F3FC3;color:#fff;font-weight:700;font-size:15px;cursor:pointer;text-decoration:none">Mittesten</a>
+    </nav>
+  </div>
+</header>
+
+<main style="flex:1">
+  <article id="karte" style="max-width:760px;margin:0 auto;padding:48px 24px 72px">
+    <p id="meldung">Einen Moment.</p>
+    <p id="hinweis" hidden></p>
+    <img id="bild" alt="" hidden referrerpolicy="no-referrer">
+    <h1 id="titel" hidden></h1>
+    <p id="wann" hidden></p>
+    <p id="ort" hidden></p>
+    <p id="adresse" hidden></p>
+    <p id="startseite" hidden><a href="/">Zur Startseite</a></p>
+    <a id="store" class="hover-a35a3" href="https://apps.apple.com/app/id6798559616">Im App Store laden</a>
+    <noscript>
+      <style>#meldung { display: none !important; }</style>
+      <p style="margin:16px 0 0;font-size:17px;line-height:1.55;color:#1C2340">Die Eventangaben brauchen JavaScript. Die App gibt es im App Store.</p>
+    </noscript>
+  </article>
+</main>
+
+<footer style="background:#1C2340">
+  <div style="max-width:1160px;margin:0 auto;padding:36px 24px;display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:center">
+    <div style="display:flex;align-items:center;gap:8px">
+      <svg width="24" height="24" viewBox="0 0 100 100"><circle cx="50" cy="19.5" r="9" fill="#fff"></circle><path d="M 26 39 L 26 60 A 24 24 0 0 0 74 60 L 74 39" fill="none" stroke="#fff" stroke-width="18" stroke-linecap="round"></path></svg>
+      <span style="font-weight:800;font-size:20px;letter-spacing:-1px;color:#fff">umzu</span>
+    </div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;font-size:14px;color:rgba(255,255,255,0.86)">
+      <a href="/impressum/" style="color:rgba(255,255,255,0.86)">Impressum</a><a href="/datenschutz/" style="color:rgba(255,255,255,0.86)">Datenschutz</a>
+    </div>
+  </div>
+</footer>
+</div>
+
+<script src="/js/event.js"></script>
+</body>
+</html>
